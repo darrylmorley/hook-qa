@@ -52,6 +52,10 @@ HookQA/
     └── build-prompts/                 # Phase prompts used during initial build
 ```
 
+## Tracking
+
+Todos, enhancements, and bugs are tracked as [GitHub Issues](https://github.com/darrylmorley/hook-qa/issues).
+
 ## Conventions
 
 - Use `@Observable` (Observation framework), NOT `ObservableObject`/`@Published`
