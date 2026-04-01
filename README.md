@@ -1,6 +1,6 @@
 # HookQA
 
-HookQA is a macOS menubar app that adds automatic quality-assurance review to [Claude Code](https://claude.ai/code). It intercepts Claude's Stop hook after every task completion, sends the conversation transcript to a local [Ollama](https://ollama.com) model, and either approves the result or feeds an issue report back to Claude to fix.
+HookQA is a macOS menubar app that adds automated QA review to [Claude Code](https://claude.ai/code). It installs a Claude Code Stop hook that sends code changes to a local [Ollama](https://ollama.com) model for review. If the model finds critical issues, Claude Code is blocked from stopping and receives findings as actionable feedback.
 
 ## Installation
 
@@ -24,51 +24,94 @@ You can skip onboarding at any time; settings are accessible via the menubar pop
 
 ## How It Works
 
-### Stop Hook Flow
-
 ```
 Claude Code finishes a task
-        │
-        ▼
-hookqa-hook.ts (Stop hook, runs via bun)
-        │
-        ├─ Reads conversation transcript from stdin (JSON)
-        ├─ Sends transcript + system prompt to Ollama
-        │
-        ▼
-Ollama reviews the work
-        │
-        ├─ APPROVE  → hook exits 0, Claude Code continues
-        └─ BLOCK    → hook exits non-zero with a feedback message
-                      Claude Code sees the message and tries to fix the issue
+        |
+        v
+hookqa-hook.ts (Stop hook, runs via Bun)
+        |
+        +-- Reads config from ~/.claude/hooks/hookqa.json
+        +-- Collects git diff (staged + unstaged)
+        +-- Sends diff + QA prompt to Ollama
+        |
+        v
+Ollama reviews the changes
+        |
+        +-- PASS    -> hook exits 0, Claude stops normally
+        +-- FAIL    -> hook exits 2 with findings on stderr
+        |             Claude sees feedback and continues working
+        +-- SKIPPED -> diff below minDiffLines, exits 0
+        +-- ERROR   -> infrastructure error, exits 0 (never blocks)
 ```
 
-The hook script is written in TypeScript and executed by Bun. It reads the `hookqa.json` config from `~/.claude/hooks/` to know which endpoint and model to use.
+The hook script reads `hookqa.json` for all settings — the app is not in the runtime path during QA evaluation.
 
 ## Configuration
 
-Settings are stored in `~/.claude/hooks/hookqa.json` and managed through the app UI.
+Settings are stored in `~/.claude/hooks/hookqa.json` and managed through the app's popover UI.
+
+### Connection
 
 | Setting | Description | Default |
 |---|---|---|
-| `ollamaUrl` | Ollama HTTP endpoint | `http://localhost:11434` |
-| `model` | Model name | `qwen3:30b-coder` |
-| `timeout` | Request timeout in seconds | `120` |
-| `behaviour.mode` | Review mode: `balanced`, `strict`, `lenient` | `balanced` |
-| `behaviour.maxRetries` | How many times Claude may retry before approving anyway | `2` |
+| `connection.ollamaUrl` | Ollama HTTP endpoint | `http://localhost:11434` |
+| `connection.model` | Model name for QA reviews | `qwen3:30b-coder` |
+| `connection.apiKey` | Optional API key for cloud Ollama endpoints | `null` |
+| `connection.timeout` | Request timeout in seconds | `120` |
+
+### Behaviour
+
+| Setting | Description | Default |
+|---|---|---|
+| `behaviour.enabled` | Master enable/disable toggle | `true` |
+| `behaviour.blockOnWarnings` | Block on warnings, not just criticals | `false` |
+| `behaviour.maxDiffLines` | Max diff lines sent to model (100-2000) | `500` |
+| `behaviour.minDiffLines` | Skip QA below this threshold (0-50) | `5` |
+| `behaviour.maxRetries` | Retries before letting Claude stop (1-3) | `1` |
+| `behaviour.temperature` | Model temperature (0.0-1.0) | `0.1` |
+
+Three presets are available: **Strict**, **Balanced**, and **Light**.
+
+### Review Weights
+
+Each criterion is weighted 0-10. Higher weights get more attention in the QA prompt:
+
+| Weight | Description | Default |
+|---|---|---|
+| `review.weights.correctness` | Bugs, logic errors, edge cases | `10` |
+| `review.weights.completeness` | Stubs, TODOs, half-finished features | `8` |
+| `review.weights.specAdherence` | Does code match what was asked? | `6` |
+| `review.weights.codeQuality` | Code smells, duplication, nesting | `4` |
+
+Custom instructions can be appended to the QA prompt via `review.customInstructions`.
 
 ### Project-Level Overrides
 
-You can override settings per project by adding a `.hookqa.json` file to your project root. The hook script merges project-level config over the global config, so you can use a different model or stricter settings for specific projects:
+Override `behaviour` and `review` settings per project by creating `.claude/hookqa.json` in your project root. Values deep-merge over the global config:
 
 ```json
 {
-  "model": "qwen3:72b",
   "behaviour": {
-    "mode": "strict"
+    "blockOnWarnings": true,
+    "maxDiffLines": 800
+  },
+  "review": {
+    "weights": {
+      "completeness": 10
+    },
+    "customInstructions": "This project uses Bun — flag any Node-specific APIs."
   }
 }
 ```
+
+## Menubar Icon Status
+
+The shield icon colour indicates current state:
+
+- **Green** — enabled, Ollama reachable
+- **Grey** — QA disabled
+- **Red** — enabled but Ollama unreachable
+- **Amber** — enabled, last QA evaluation failed
 
 ## Building from Source
 
@@ -93,13 +136,14 @@ xcodebuild build -scheme HookQA -configuration Debug
 # Build a distributable DMG (Release)
 cd ..
 ./scripts/build-dmg.sh
-# Output: build/HookQA-1.0.dmg
 ```
+
+> The app is **not sandboxed** — it needs filesystem access to `~/.claude/` and shell access to run `bun` and `git` commands.
 
 ## Auto-Updates
 
-HookQA uses [Sparkle 2](https://sparkle-project.org) for automatic updates. The appcast is hosted at `https://hookqa.bitmoor.co.uk/appcast.xml`. Updates are checked automatically on launch; you can also trigger a manual check from the Hook tab.
+HookQA uses [Sparkle 2](https://sparkle-project.org) for automatic updates. Updates are checked on launch; you can also trigger a manual check from the Hook tab.
 
 ## License
 
-Copyright © 2024 Bitmoor Ltd. All rights reserved.
+Copyright 2026 Bitmoor Ltd. All rights reserved.
