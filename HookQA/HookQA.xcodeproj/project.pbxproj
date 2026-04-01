@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A3421A4E14DF4EBA95ECE09E /* HookQAConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF650D1B89E54E32B1D1410D /* HookQAConfig.swift */; };
+		0639AD0F7FB343F9B7A96590 /* OllamaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B84C96E6D1D4E438EB39AF8 /* OllamaModel.swift */; };
+		79247C07A4EF47CE807E6161 /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769090756C5547D7A1732836 /* ConnectionStatus.swift */; };
+		99787F04FC134F78AFB3465A /* HookQALogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BCFC2EF835477CB953DAAD /* HookQALogEntry.swift */; };
+		E90462D3E3704E719F45623A /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37EFA5FCC034414BE0D5C66 /* SettingsManager.swift */; };
+		64FA22E4970144E38F7CFCBC /* OllamaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D9096EBFCD41AC974F54F2 /* OllamaClient.swift */; };
+		5015A6FFBD9A470F9133FA95 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F1B7626C2E47F986E6D41F /* MenuBarView.swift */; };
+		AD3609EFB7FA4244BE4863DD /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */; };
+		43DB3D8100C44162AD3FCEEE /* ConnectionTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */; };
+		862C344ECD7A4593B8CBD7D2 /* ShellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD86587CF641CBB9A3198F /* ShellHelper.swift */; };
+		31CC9FB004C940E68F02BDFA /* HookQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E268F23E8FA042588D67EB0D /* HookQAApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C8F1234567890ABCDEF01234 /* HookQA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HookQA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E268F23E8FA042588D67EB0D /* HookQAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookQAApp.swift; sourceTree = "<group>"; };
+		DF650D1B89E54E32B1D1410D /* HookQAConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookQAConfig.swift; sourceTree = "<group>"; };
+		0B84C96E6D1D4E438EB39AF8 /* OllamaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaModel.swift; sourceTree = "<group>"; };
+		769090756C5547D7A1732836 /* ConnectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatus.swift; sourceTree = "<group>"; };
+		F1BCFC2EF835477CB953DAAD /* HookQALogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookQALogEntry.swift; sourceTree = "<group>"; };
+		A37EFA5FCC034414BE0D5C66 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		55D9096EBFCD41AC974F54F2 /* OllamaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaClient.swift; sourceTree = "<group>"; };
+		27F1B7626C2E47F986E6D41F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
+		F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionTab.swift; sourceTree = "<group>"; };
+		0ADD86587CF641CBB9A3198F /* ShellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellHelper.swift; sourceTree = "<group>"; };
+		8780F67FED234BE9B952C4C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A0D1DFC5BAF44FF9968032F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C1E3D44A35245E4ADA426FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C8F1234567890ABCDEF01234 /* HookQA.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EDF243A0FE454DCB9AD57939 /* HookQA */ = {
+			isa = PBXGroup;
+			children = (
+				8041B9736CE44089A33DFA6B /* App */,
+				27F48D854F6E485F95EBA673 /* Models */,
+				2D4F9C58B50342D69EAA7AEC /* Services */,
+				2A8D085B6E40413D8E48CCE5 /* Views */,
+				E2D04610FDB04504B4B2D868 /* Utilities */,
+				8780F67FED234BE9B952C4C3 /* Info.plist */,
+			);
+			path = HookQA;
+			sourceTree = "<group>";
+		};
+		5BD71A9707AB49FE88251A13 /* MainGroup */ = {
+			isa = PBXGroup;
+			children = (
+				EDF243A0FE454DCB9AD57939 /* HookQA */,
+				8C1E3D44A35245E4ADA426FC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8041B9736CE44089A33DFA6B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E268F23E8FA042588D67EB0D /* HookQAApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		27F48D854F6E485F95EBA673 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DF650D1B89E54E32B1D1410D /* HookQAConfig.swift */,
+				0B84C96E6D1D4E438EB39AF8 /* OllamaModel.swift */,
+				769090756C5547D7A1732836 /* ConnectionStatus.swift */,
+				F1BCFC2EF835477CB953DAAD /* HookQALogEntry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2D4F9C58B50342D69EAA7AEC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A37EFA5FCC034414BE0D5C66 /* SettingsManager.swift */,
+				55D9096EBFCD41AC974F54F2 /* OllamaClient.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2A8D085B6E40413D8E48CCE5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				27F1B7626C2E47F986E6D41F /* MenuBarView.swift */,
+				CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */,
+				F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E2D04610FDB04504B4B2D868 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0ADD86587CF641CBB9A3198F /* ShellHelper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		30950263F8ED4AE1B179ED43 /* HookQA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 499428C786E54A88B9B97EAC /* Build configuration list for PBXNativeTarget "HookQA" */;
+			buildPhases = (
+				AE68729E082E45F9B2B08642 /* Sources */,
+				2A0D1DFC5BAF44FF9968032F /* Frameworks */,
+				3687B53895D64B858ABC8281 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HookQA;
+			productName = HookQA;
+			productReference = C8F1234567890ABCDEF01234 /* HookQA.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		241C637837204F5D8237B2FD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					30950263F8ED4AE1B179ED43 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = FA78682FC07143E189F77347 /* Build configuration list for PBXProject "HookQA" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5BD71A9707AB49FE88251A13 /* MainGroup */;
+			productRefGroup = 8C1E3D44A35245E4ADA426FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				30950263F8ED4AE1B179ED43 /* HookQA */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3687B53895D64B858ABC8281 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE68729E082E45F9B2B08642 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31CC9FB004C940E68F02BDFA /* HookQAApp.swift in Sources */,
+				A3421A4E14DF4EBA95ECE09E /* HookQAConfig.swift in Sources */,
+				0639AD0F7FB343F9B7A96590 /* OllamaModel.swift in Sources */,
+				79247C07A4EF47CE807E6161 /* ConnectionStatus.swift in Sources */,
+				99787F04FC134F78AFB3465A /* HookQALogEntry.swift in Sources */,
+				E90462D3E3704E719F45623A /* SettingsManager.swift in Sources */,
+				64FA22E4970144E38F7CFCBC /* OllamaClient.swift in Sources */,
+				5015A6FFBD9A470F9133FA95 /* MenuBarView.swift in Sources */,
+				AD3609EFB7FA4244BE4863DD /* StatusBarView.swift in Sources */,
+				43DB3D8100C44162AD3FCEEE /* ConnectionTab.swift in Sources */,
+				862C344ECD7A4593B8CBD7D2 /* ShellHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4B59E32DDCAD47B48A343964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		57252F61581E404EB02804FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		057858BA466A4EE498AF0D3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HookQA/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.uk.bitmoor.hookqa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		D970CA7D37984611A0A0C297 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HookQA/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.uk.bitmoor.hookqa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA78682FC07143E189F77347 /* Build configuration list for PBXProject "HookQA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B59E32DDCAD47B48A343964 /* Debug */,
+				57252F61581E404EB02804FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		499428C786E54A88B9B97EAC /* Build configuration list for PBXNativeTarget "HookQA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				057858BA466A4EE498AF0D3E /* Debug */,
+				D970CA7D37984611A0A0C297 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 241C637837204F5D8237B2FD /* Project object */;
+}
