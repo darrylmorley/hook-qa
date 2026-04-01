@@ -1,0 +1,18 @@
+# Build outputs
+build/
+*.xcarchive
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+.DS_Store
+
+# SPM
+.build/
+*.resolved
+
+# macOS
+.DS_Store
+Thumbs.db

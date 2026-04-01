@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Sparkle
 
 @main
 struct HookQAApp: App {
@@ -23,6 +24,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var logWatcher: LogWatcher?
     private var statusMonitor: StatusMonitor?
 
+    // Sparkle updater controller — handles auto-checking on launch
+    private var updaterController: SPUStandardUpdaterController?
+
     // Observation task for updating the icon when statusMonitor changes
     private var observationTask: Task<Void, Never>?
 
@@ -31,6 +35,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let monitor = StatusMonitor(settings: SettingsManager.shared, logWatcher: watcher)
         logWatcher = watcher
         statusMonitor = monitor
+
+        // Initialise Sparkle — it will automatically check for updates on launch
+        updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
 
         setupStatusItem(logWatcher: watcher, statusMonitor: monitor)
         observeStatus(monitor: monitor)
@@ -98,5 +109,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             pop.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             pop.contentViewController?.view.window?.makeKey()
         }
+    }
+
+    /// Called from HookTab to trigger a manual update check via Sparkle.
+    func checkForUpdates() {
+        updaterController?.checkForUpdates(nil)
     }
 }

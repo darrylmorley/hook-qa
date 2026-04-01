@@ -1,4 +1,5 @@
 import SwiftUI
+import ServiceManagement
 
 struct HookTab: View {
     @Environment(SettingsManager.self) private var settings
@@ -7,6 +8,8 @@ struct HookTab: View {
 
     @State private var showUninstallConfirmation = false
     @State private var isWorking = false
+    @State private var launchAtLogin = false
+    @State private var launchAtLoginError: String? = nil
 
     var body: some View {
         ScrollView {
@@ -130,6 +133,53 @@ struct HookTab: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(Color.accentColor)
                     }
+
+                    // Check for Updates button
+                    Button {
+                        if let delegate = NSApplication.shared.delegate as? AppDelegate {
+                            delegate.checkForUpdates()
+                        }
+                    } label: {
+                        Label("Check for Updates", systemImage: "arrow.down.circle")
+                            .font(.caption)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(Color.accentColor)
+                }
+
+                // MARK: Launch at Login section
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("System")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    VStack(spacing: 0) {
+                        HStack {
+                            Text("Launch at Login")
+                                .font(.body)
+                            Spacer()
+                            Toggle("", isOn: $launchAtLogin)
+                                .toggleStyle(.switch)
+                                .labelsHidden()
+                                .onChange(of: launchAtLogin) { _, newValue in
+                                    setLaunchAtLogin(newValue)
+                                }
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                    }
+                    .background(Color(nsColor: .controlBackgroundColor))
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+                    )
+
+                    if let error = launchAtLoginError {
+                        Text(error)
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
                 }
 
                 Spacer()
@@ -138,6 +188,7 @@ struct HookTab: View {
         }
         .task {
             installer.refreshStatus()
+            refreshLaunchAtLoginState()
         }
         .alert("Uninstall Hook?", isPresented: $showUninstallConfirmation) {
             Button("Uninstall", role: .destructive) {
@@ -165,6 +216,25 @@ struct HookTab: View {
         await action()
         installer.refreshStatus()
         isWorking = false
+    }
+
+    private func refreshLaunchAtLoginState() {
+        launchAtLogin = SMAppService.mainApp.status == .enabled
+    }
+
+    private func setLaunchAtLogin(_ enable: Bool) {
+        launchAtLoginError = nil
+        do {
+            if enable {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            launchAtLoginError = "Could not \(enable ? "enable" : "disable") launch at login: \(error.localizedDescription)"
+            // Revert the toggle to reflect the real state
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+        }
     }
 }
 

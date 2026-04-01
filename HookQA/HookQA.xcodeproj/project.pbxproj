@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		GG11HH22II33JJ44KK55LL66 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = GG11HH22II33JJ44KK55LL67 /* OnboardingView.swift */; };
+		SP00ARKLE0000000000000001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = SP00ARKLE0000000000000002 /* Sparkle */; };
 		A3421A4E14DF4EBA95ECE09E /* HookQAConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF650D1B89E54E32B1D1410D /* HookQAConfig.swift */; };
 		0639AD0F7FB343F9B7A96590 /* OllamaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B84C96E6D1D4E438EB39AF8 /* OllamaModel.swift */; };
 		79247C07A4EF47CE807E6161 /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769090756C5547D7A1732836 /* ConnectionStatus.swift */; };
@@ -54,6 +56,7 @@
 		F501234501234501234501AB /* LogWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWatcher.swift; sourceTree = "<group>"; };
 		F601234601234601234601AB /* StatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMonitor.swift; sourceTree = "<group>"; };
 		F701234701234701234701AB /* LogsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsTab.swift; sourceTree = "<group>"; };
+		GG11HH22II33JJ44KK55LL67 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE55FF6600AABB11CC22DD33 /* Security.framework in Frameworks */,
+				SP00ARKLE0000000000000001 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +152,7 @@
 				C2B3D4E5F607182930A4B5C7 /* ReviewTab.swift */,
 				CC33DD44EE55FF6600AABB12 /* HookTab.swift */,
 				F701234701234701234701AB /* LogsTab.swift */,
+				GG11HH22II33JJ44KK55LL67 /* OnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -185,6 +190,9 @@
 			dependencies = (
 			);
 			name = HookQA;
+			packageProductDependencies = (
+				SP00ARKLE0000000000000002 /* Sparkle */,
+			);
 			productName = HookQA;
 			productReference = C8F1234567890ABCDEF01234 /* HookQA.app */;
 			productType = "com.apple.product-type.application";
@@ -213,6 +221,9 @@
 				Base,
 			);
 			mainGroup = 5BD71A9707AB49FE88251A13 /* MainGroup */;
+			packageReferences = (
+				SP00ARKLE0000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			productRefGroup = 8C1E3D44A35245E4ADA426FC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,6 +268,7 @@
 				F501234501234501234501AA /* LogWatcher.swift in Sources */,
 				F601234601234601234601AA /* StatusMonitor.swift in Sources */,
 				F701234701234701234701AA /* LogsTab.swift in Sources */,
+				GG11HH22II33JJ44KK55LL66 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +462,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		SP00ARKLE0000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		SP00ARKLE0000000000000002 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SP00ARKLE0000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 	};
 	rootObject = 241C637837204F5D8237B2FD /* Project object */;

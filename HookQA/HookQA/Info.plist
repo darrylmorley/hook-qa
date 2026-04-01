@@ -26,5 +26,9 @@
 	<string>Copyright © 2024 Bitmoor Ltd. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUFeedURL</key>
+	<string>https://hookqa.bitmoor.co.uk/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>PLACEHOLDER_EDDSA_PUBLIC_KEY</string>
 </dict>
 </plist>
