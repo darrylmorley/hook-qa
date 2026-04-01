@@ -20,6 +20,8 @@ enum MenuBarTab: String, CaseIterable {
 
 struct MenuBarView: View {
     @Environment(SettingsManager.self) private var settings
+    @Environment(LogWatcher.self) private var logWatcher
+    @Environment(StatusMonitor.self) private var statusMonitor
 
     @State private var selectedTab: MenuBarTab = .connection
     @State private var connectionStatus: ConnectionStatus = .checking
@@ -60,7 +62,7 @@ struct MenuBarView: View {
                 case .hook:
                     HookTab()
                 case .logs:
-                    PlaceholderTabView(title: "Logs")
+                    LogsTab()
                 }
             }
             .frame(minHeight: 300)
@@ -111,6 +113,9 @@ struct ConnectionStatusPreferenceKey: PreferenceKey {
 }
 
 #Preview {
+    let logWatcher = LogWatcher()
     MenuBarView()
         .environment(SettingsManager.shared)
+        .environment(logWatcher)
+        .environment(StatusMonitor(settings: SettingsManager.shared, logWatcher: logWatcher))
 }

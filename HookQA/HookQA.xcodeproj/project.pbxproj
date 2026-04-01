@@ -25,6 +25,9 @@
 		CC33DD44EE55FF6600AABB11 /* HookTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC33DD44EE55FF6600AABB12 /* HookTab.swift */; };
 		DD44EE55FF6600AABB11CC22 /* hookqa-hook.ts in Resources */ = {isa = PBXBuildFile; fileRef = DD44EE55FF6600AABB11CC23 /* hookqa-hook.ts */; };
 		EE55FF6600AABB11CC22DD33 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE55FF6600AABB11CC22DD34 /* Security.framework */; };
+		F501234501234501234501AA /* LogWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F501234501234501234501AB /* LogWatcher.swift */; };
+		F601234601234601234601AA /* StatusMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F601234601234601234601AB /* StatusMonitor.swift */; };
+		F701234701234701234701AA /* LogsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F701234701234701234701AB /* LogsTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		CC33DD44EE55FF6600AABB12 /* HookTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookTab.swift; sourceTree = "<group>"; };
 		DD44EE55FF6600AABB11CC23 /* hookqa-hook.ts */ = {isa = PBXFileReference; lastKnownFileType = text; path = "hookqa-hook.ts"; sourceTree = "<group>"; };
 		EE55FF6600AABB11CC22DD34 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F501234501234501234501AB /* LogWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWatcher.swift; sourceTree = "<group>"; };
+		F601234601234601234601AB /* StatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMonitor.swift; sourceTree = "<group>"; };
+		F701234701234701234701AB /* LogsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsTab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +132,8 @@
 				A37EFA5FCC034414BE0D5C66 /* SettingsManager.swift */,
 				55D9096EBFCD41AC974F54F2 /* OllamaClient.swift */,
 				AA11BB22CC33DD44EE55FF67 /* HookInstaller.swift */,
+				F501234501234501234501AB /* LogWatcher.swift */,
+				F601234601234601234601AB /* StatusMonitor.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -139,6 +147,7 @@
 				B1A2C3D4E5F60718293A4B5D /* BehaviourTab.swift */,
 				C2B3D4E5F607182930A4B5C7 /* ReviewTab.swift */,
 				CC33DD44EE55FF6600AABB12 /* HookTab.swift */,
+				F701234701234701234701AB /* LogsTab.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -245,6 +254,9 @@
 				AA11BB22CC33DD44EE55FF66 /* HookInstaller.swift in Sources */,
 				BB22CC33DD44EE55FF6600AA /* KeychainHelper.swift in Sources */,
 				CC33DD44EE55FF6600AABB11 /* HookTab.swift in Sources */,
+				F501234501234501234501AA /* LogWatcher.swift in Sources */,
+				F601234601234601234601AA /* StatusMonitor.swift in Sources */,
+				F701234701234701234701AA /* LogsTab.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
