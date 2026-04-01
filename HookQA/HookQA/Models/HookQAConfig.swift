@@ -28,7 +28,7 @@ struct ConnectionConfig: Codable {
 
     init() {
         ollamaUrl = "http://localhost:11434"
-        model = "qwen3:30b-coder"
+        model = ""
         apiKey = nil
         timeout = 120
     }

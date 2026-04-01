@@ -3,7 +3,9 @@ import SwiftUI
 struct ConnectionTab: View {
     @Environment(SettingsManager.self) private var settings
 
-    @State private var models: [OllamaModel] = []
+    @State private var localModels: [OllamaModel] = []
+    @State private var cloudModels: [OllamaModel] = []
+    @State private var cloudFetchError: String? = nil
     @State private var connectionStatus: ConnectionStatus = .checking
     @State private var isLoadingModels = false
     @State private var testResult: String? = nil
@@ -44,10 +46,10 @@ struct ConnectionTab: View {
                     }
                 }
 
-                // MARK: Model list
+                // MARK: Local models
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text("Available Models")
+                        Text("Local Models")
                             .font(.caption)
                             .foregroundStyle(.secondary)
 
@@ -58,36 +60,41 @@ struct ConnectionTab: View {
                             .foregroundStyle(statusColor)
                     }
 
-                    if models.isEmpty && !isLoadingModels {
-                        Text("No models found — check the endpoint or pull a model in Ollama.")
+                    if localModels.isEmpty && !isLoadingModels {
+                        Text("No local models found — check the endpoint or pull a model in Ollama.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.vertical, 12)
                     } else {
-                        VStack(spacing: 0) {
-                            ForEach(models) { model in
-                                ModelRow(
-                                    model: model,
-                                    isSelected: settings.config.connection.model == model.name
-                                )
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    settings.config.connection.model = model.name
-                                    settings.scheduleSave()
-                                }
+                        modelList(localModels)
+                    }
+                }
 
-                                if model.id != models.last?.id {
-                                    Divider()
-                                }
-                            }
+                // MARK: Cloud models
+                if !cloudModels.isEmpty || cloudFetchError != nil {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text("Cloud Models")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            Spacer()
+
+                            Image(systemName: "cloud.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
                         }
-                        .background(Color(nsColor: .controlBackgroundColor))
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 6)
-                                .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
-                        )
+
+                        if let error = cloudFetchError {
+                            Text(error)
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.vertical, 12)
+                        } else {
+                            modelList(cloudModels)
+                        }
                     }
                 }
 
@@ -168,16 +175,61 @@ struct ConnectionTab: View {
         isLoadingModels = true
         connectionStatus = .checking
 
+        // Fetch local and cloud models concurrently
+        let key = settings.config.connection.apiKey
+
+        var local: [OllamaModel] = []
         do {
-            let fetched = try await OllamaClient.shared.fetchModels(settings: settings)
-            models = fetched
-            connectionStatus = .connected(fetched.count)
+            local = try await OllamaClient.shared.fetchModels(settings: settings)
         } catch {
-            models = []
+            // Local Ollama may not be running
+        }
+
+        var cloud: [OllamaModel] = []
+        do {
+            cloud = try await OllamaClient.shared.fetchCloudModels(apiKey: key)
+            cloudFetchError = nil
+        } catch {
+            cloudFetchError = error.localizedDescription
+        }
+
+        localModels = local
+        cloudModels = cloud
+
+        if !local.isEmpty {
+            connectionStatus = .connected(local.count)
+        } else {
             connectionStatus = .unreachable
         }
 
         isLoadingModels = false
+    }
+
+    @ViewBuilder
+    private func modelList(_ models: [OllamaModel]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(models) { model in
+                ModelRow(
+                    model: model,
+                    isSelected: settings.config.connection.model == model.name
+                )
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    settings.config.connection.model = model.name
+                    settings.scheduleSave()
+                }
+
+                if model.id != models.last?.id {
+                    Divider()
+                }
+            }
+        }
+        .background(Color(nsColor: .controlBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(Color(nsColor: .separatorColor), lineWidth: 1)
+        )
     }
 
     private func testConnection() async {
@@ -218,15 +270,23 @@ private struct ModelRow: View {
                 .frame(width: 16)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(model.name)
-                    .font(.system(.body, design: .monospaced))
-                    .lineLimit(1)
+                HStack(spacing: 4) {
+                    Text(model.name)
+                        .font(.system(.body, design: .monospaced))
+                        .lineLimit(1)
+
+                    if model.isCloud {
+                        Image(systemName: "cloud.fill")
+                            .font(.caption)
+                            .foregroundStyle(.blue)
+                    }
+                }
 
                 HStack(spacing: 8) {
-                    if let params = model.details?.parameter_size {
+                    if let params = model.details?.parameter_size, !params.isEmpty {
                         badge(params)
                     }
-                    if let quant = model.details?.quantization_level {
+                    if let quant = model.details?.quantization_level, !quant.isEmpty {
                         badge(quant)
                     }
                 }
@@ -234,10 +294,12 @@ private struct ModelRow: View {
 
             Spacer()
 
-            Text(formattedSize(model.size))
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .monospacedDigit()
+            if !model.isCloud {
+                Text(formattedSize(model.size))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)

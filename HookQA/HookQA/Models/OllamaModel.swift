@@ -7,6 +7,8 @@ struct OllamaModel: Codable, Identifiable, Sendable {
     let size: Int64
     let modified_at: String
     let details: OllamaModelDetails?
+
+    var isCloud: Bool { name.hasSuffix(":cloud") }
 }
 
 struct OllamaModelDetails: Codable, Sendable {

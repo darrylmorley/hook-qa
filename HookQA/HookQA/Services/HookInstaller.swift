@@ -146,7 +146,7 @@ final class HookInstaller {
         }
 
         let data = try Data(contentsOf: settingsURL)
-        guard let dict = try JSONSerialization.jsonObject(with: data) as? NSMutableDictionary else {
+        guard let dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSMutableDictionary else {
             throw HookInstallerError.settingsParseError
         }
         return dict

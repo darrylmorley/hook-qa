@@ -19,7 +19,9 @@ interface LoggingConfig {
 
 interface ConnectionConfig {
   ollamaUrl?: string;
+  model?: string;
   apiKey?: string;
+  timeout?: number;
 }
 
 interface BehaviourConfig {
@@ -125,7 +127,7 @@ async function loadConfig(): Promise<ResolvedConfig> {
   const defaults: ResolvedConfig = {
     ollamaUrl: "http://localhost:11434",
     apiKey: null,
-    model: "qwen3:30b-coder",
+    model: "",
     timeout: 120,
     enabled: true,
     blockOnWarnings: false,
@@ -155,7 +157,9 @@ async function loadConfig(): Promise<ResolvedConfig> {
 
   if (globalFile) {
     if (globalFile.connection?.ollamaUrl) config.ollamaUrl = globalFile.connection.ollamaUrl;
+    if (globalFile.connection?.model) config.model = globalFile.connection.model;
     if (globalFile.connection?.apiKey != null) config.apiKey = globalFile.connection.apiKey;
+    if (globalFile.connection?.timeout != null) config.timeout = globalFile.connection.timeout;
     if (globalFile.behaviour?.enabled != null) config.enabled = globalFile.behaviour.enabled;
     if (globalFile.behaviour?.blockOnWarnings != null) config.blockOnWarnings = globalFile.behaviour.blockOnWarnings;
     if (globalFile.behaviour?.maxDiffLines != null) config.maxDiffLines = globalFile.behaviour.maxDiffLines;
@@ -366,8 +370,19 @@ async function appendLog(config: ResolvedConfig, entry: LogEntry): Promise<void>
 
 // --- Ollama API Call ---
 
+const CLOUD_BASE_URL = "https://ollama.com";
+const CLOUD_SUFFIX = ":cloud";
+
+function resolveEndpoint(model: string, localBase: string): { baseURL: string; apiModel: string } {
+  if (model.endsWith(CLOUD_SUFFIX)) {
+    return { baseURL: CLOUD_BASE_URL, apiModel: model.slice(0, -CLOUD_SUFFIX.length) };
+  }
+  return { baseURL: localBase, apiModel: model };
+}
+
 async function callOllama(config: ResolvedConfig, prompt: { system: string; user: string }): Promise<{ response: QAResponse | null; durationMs: number }> {
   const apiStart = Date.now();
+  const { baseURL, apiModel } = resolveEndpoint(config.model, config.ollamaUrl);
 
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (config.apiKey) {
@@ -375,7 +390,7 @@ async function callOllama(config: ResolvedConfig, prompt: { system: string; user
   }
 
   const body = JSON.stringify({
-    model: config.model,
+    model: apiModel,
     messages: [
       { role: "system", content: prompt.system },
       { role: "user", content: prompt.user },
@@ -388,7 +403,7 @@ async function callOllama(config: ResolvedConfig, prompt: { system: string; user
   const timer = setTimeout(() => controller.abort(), config.timeout * 1000);
 
   try {
-    const res = await fetch(`${config.ollamaUrl}/api/chat`, {
+    const res = await fetch(`${baseURL}/api/chat`, {
       method: "POST",
       headers,
       body,
@@ -478,6 +493,11 @@ async function main(): Promise<void> {
   const config = await loadConfig();
 
   if (!config.enabled) {
+    await deleteRetryFile(sessionId);
+    process.exit(0);
+  }
+
+  if (!config.model) {
     await deleteRetryFile(sessionId);
     process.exit(0);
   }

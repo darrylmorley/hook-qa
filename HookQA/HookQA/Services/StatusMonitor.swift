@@ -88,20 +88,22 @@ final class StatusMonitor {
     }
 
     private func checkOllamaReachability() async -> Bool {
-        let urlString = settings.config.connection.ollamaUrl
-        guard let url = URL(string: "\(urlString)/api/tags") else { return false }
+        let model = settings.config.connection.model
+        let isCloud = model.hasSuffix(":cloud")
+        let baseURL = isCloud ? "https://ollama.com" : settings.config.connection.ollamaUrl
+        guard let url = URL(string: "\(baseURL)/api/tags") else { return false }
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.timeoutInterval = 5
+        request.timeoutInterval = isCloud ? 10 : 5
 
         if let apiKey = settings.config.connection.apiKey {
             request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         }
 
         let config = URLSessionConfiguration.ephemeral
-        config.timeoutIntervalForRequest = 5
-        config.timeoutIntervalForResource = 5
+        config.timeoutIntervalForRequest = isCloud ? 10 : 5
+        config.timeoutIntervalForResource = isCloud ? 10 : 5
         let session = URLSession(configuration: config)
 
         do {
