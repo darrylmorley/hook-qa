@@ -67,6 +67,15 @@ hookqa-hook.ts (Stop hook, runs via Bun)
 
 The hook script reads `hookqa.json` for all settings — the app is not in the runtime path during QA evaluation.
 
+### Exit Codes
+
+| Code | Meaning | Effect |
+|:---:|---|---|
+| `0` | Pass, skipped, or infrastructure error | Claude Code stops normally |
+| `2` | Fail — critical issues found | Claude Code is blocked and receives findings |
+
+The hook always exits `0` on infrastructure errors (Ollama offline, config missing, no git repo) so it never blocks Claude Code due to tooling problems.
+
 ## Local vs Cloud Models
 
 | | Local | Cloud |
@@ -187,12 +196,22 @@ cd hook-qa/HookQA
 xcodebuild build -scheme HookQA -configuration Debug
 ```
 
-For a release DMG ([create-dmg](https://github.com/create-dmg/create-dmg) required):
+### Release DMG (signed + notarized)
+
+Requires [create-dmg](https://github.com/create-dmg/create-dmg) and a Developer ID Application certificate.
 
 ```bash
-cd hook-qa
+# One-time: store notarization credentials
+xcrun notarytool store-credentials "hookqa-notary" \
+    --apple-id YOUR_APPLE_ID \
+    --team-id YOUR_TEAM_ID \
+    --password APP_SPECIFIC_PASSWORD
+
+# Build, sign, notarize, and staple
 ./scripts/build-dmg.sh
 ```
+
+The script auto-detects your Developer ID signing identity from the keychain. Override with `SIGN_IDENTITY` env var if needed. Use `SKIP_NOTARIZE=1` to build a signed DMG without notarization.
 
 > The app is **not sandboxed** — it needs filesystem access to `~/.claude/` and shell access for `bun` and `git`.
 

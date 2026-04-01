@@ -46,7 +46,7 @@ HookQA/
 │       ├── KeychainHelper.swift       # Keychain read/write for API key
 │       └── ShellHelper.swift          # Process wrapper for shell commands
 ├── scripts/
-│   └── build-dmg.sh                   # Release DMG builder (requires create-dmg)
+│   └── build-dmg.sh                   # Signed + notarized release DMG builder
 └── docs/
     ├── HOOKQA_SPEC.md                 # Full product specification
     └── build-prompts/                 # Phase prompts used during initial build
@@ -83,7 +83,14 @@ HookQA/
 cd HookQA && xcodebuild build -scheme HookQA -configuration Debug
 ```
 
-For a release DMG: `./scripts/build-dmg.sh` (requires `brew install create-dmg`)
+For a signed + notarized release DMG:
+
+```bash
+./scripts/build-dmg.sh          # requires create-dmg + Developer ID cert
+SKIP_NOTARIZE=1 ./scripts/build-dmg.sh   # signed but not notarized
+```
+
+The build script auto-detects the Developer ID signing identity, re-signs all nested binaries (Sparkle XPC services, Updater.app), and submits to Apple's notary service. Notarization credentials are stored in the keychain under the profile `hookqa-notary`.
 
 ## Do Not
 

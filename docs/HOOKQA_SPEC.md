@@ -338,8 +338,10 @@ The bundled `hookqa-hook.ts` must be updated from the current `qa-evaluator.ts` 
 - **Xcode project**, Swift 6, SwiftUI
 - **macOS 14+** deployment target
 - **Sparkle 2** for auto-updates (appcast URL TBD, hosted on bitmoor.co.uk or GitHub Releases)
-- **DMG** distribution via `create-dmg` or similar
-- **Code signing:** Developer ID (or unsigned for personal use initially)
+- **DMG** distribution via `create-dmg`, signed and notarized via `scripts/build-dmg.sh`
+- **Code signing:** Developer ID Application, hardened runtime enabled
+- **Notarization:** Apple notary service via `xcrun notarytool`, ticket stapled to DMG
+- **Entitlements:** `allow-unsigned-executable-memory` and `disable-library-validation` (Sparkle), `automation.apple-events` (shell access)
 - **Bundle ID:** `co.uk.bitmoor.hookqa`
 - **Launch at Login:** LSUIElement (menubar-only app, no dock icon). Optional "Launch at Login" toggle in settings using `SMAppService`.
 
