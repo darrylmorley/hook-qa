@@ -30,6 +30,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // Observation task for updating the icon when statusMonitor changes
     private var observationTask: Task<Void, Never>?
 
+    // Animation state
+    private var rotationTimer: Timer?
+    private var rotationAngle: CGFloat = 0
+    private var isAnimating = false
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         let watcher = LogWatcher()
         let monitor = StatusMonitor(settings: SettingsManager.shared, logWatcher: watcher)
@@ -72,15 +77,61 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // Poll for changes — withObservationTracking fires once per change
             while !Task.isCancelled {
                 let status = monitor.menuBarStatus
-                self?.updateIcon(for: status)
-                // Yield briefly so we don't spin; observation will re-schedule us
+                let working = monitor.isWorking
+                self?.updateIcon(for: status, working: working)
                 try? await Task.sleep(for: .milliseconds(500))
             }
         }
     }
 
-    private func updateIcon(for status: MenuBarStatus) {
-        statusItem?.button?.image = makeIcon(for: status)
+    private func updateIcon(for status: MenuBarStatus, working: Bool) {
+        if working {
+            startRotationAnimation(status: status)
+        } else {
+            stopRotationAnimation()
+            statusItem?.button?.image = makeIcon(for: status)
+        }
+    }
+
+    private func startRotationAnimation(status: MenuBarStatus) {
+        guard !isAnimating else { return }
+        isAnimating = true
+
+        rotationTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            self.rotationAngle += 5
+            if self.rotationAngle >= 360 { self.rotationAngle = 0 }
+
+            if let image = self.makeIcon(for: status) {
+                let rotated = self.rotateImage(image, byDegrees: self.rotationAngle)
+                self.statusItem?.button?.image = rotated
+            }
+        }
+    }
+
+    private func stopRotationAnimation() {
+        guard isAnimating else { return }
+        isAnimating = false
+        rotationTimer?.invalidate()
+        rotationTimer = nil
+        rotationAngle = 0
+    }
+
+    private func rotateImage(_ image: NSImage, byDegrees degrees: CGFloat) -> NSImage {
+        let size = image.size
+        let rotated = NSImage(size: size)
+        rotated.lockFocus()
+
+        let transform = NSAffineTransform()
+        transform.translateX(by: size.width / 2, yBy: size.height / 2)
+        transform.rotate(byDegrees: degrees)
+        transform.translateX(by: -size.width / 2, yBy: -size.height / 2)
+        transform.concat()
+
+        image.draw(in: NSRect(origin: .zero, size: size))
+        rotated.unlockFocus()
+        rotated.isTemplate = image.isTemplate
+        return rotated
     }
 
     private func makeIcon(for status: MenuBarStatus) -> NSImage? {

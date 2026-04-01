@@ -28,6 +28,7 @@ final class StatusMonitor {
     // MARK: - Public state
 
     private(set) var menuBarStatus: MenuBarStatus = .disabled
+    private(set) var isWorking: Bool = false
 
     // MARK: - Private
 
@@ -55,6 +56,9 @@ final class StatusMonitor {
     func refresh() async {
         let enabled = settings.config.behaviour.enabled
 
+        // Check if hook process is running
+        isWorking = checkHookRunning()
+
         guard enabled else {
             menuBarStatus = .disabled
             return
@@ -79,11 +83,29 @@ final class StatusMonitor {
     // MARK: - Private helpers
 
     private func scheduleTimer() {
-        timerBox.timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+        // Poll faster (2s) to catch hook start/stop quickly
+        timerBox.timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
             guard let self else { return }
             Task { @MainActor in
                 await self.refresh()
             }
+        }
+    }
+
+    private func checkHookRunning() -> Bool {
+        let pipe = Pipe()
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+        process.arguments = ["-f", "hookqa-hook"]
+        process.standardOutput = pipe
+        process.standardError = FileHandle.nullDevice
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+            return process.terminationStatus == 0
+        } catch {
+            return false
         }
     }
 
