@@ -69,9 +69,14 @@ fi
 
 # Create DMG
 echo "==> Creating DMG…"
+VOLICON_FLAG=""
+if [ -f "$APP_PATH/Contents/Resources/AppIcon.icns" ]; then
+    VOLICON_FLAG="--volicon $APP_PATH/Contents/Resources/AppIcon.icns"
+fi
+
 create-dmg \
     --volname "HookQA ${VERSION}" \
-    --volicon "$APP_PATH/Contents/Resources/AppIcon.icns" \
+    $VOLICON_FLAG \
     --window-pos 200 120 \
     --window-size 600 400 \
     --icon-size 100 \
