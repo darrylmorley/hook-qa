@@ -1,18 +1,30 @@
 # Build outputs
 build/
 *.xcarchive
+*.dmg
 
 # Xcode
 *.xcuserstate
 xcuserdata/
 *.xcworkspace/xcuserdata/
 DerivedData/
-.DS_Store
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 # SPM
 .build/
 *.resolved
+.swiftpm/
 
 # macOS
 .DS_Store
 Thumbs.db
+
+# Test artifacts
+test-project/
+
+# Debug logs
+hookqa-debug.log
