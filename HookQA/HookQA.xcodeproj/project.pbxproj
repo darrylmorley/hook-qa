@@ -16,6 +16,8 @@
 		5015A6FFBD9A470F9133FA95 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F1B7626C2E47F986E6D41F /* MenuBarView.swift */; };
 		AD3609EFB7FA4244BE4863DD /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */; };
 		43DB3D8100C44162AD3FCEEE /* ConnectionTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */; };
+		B1A2C3D4E5F60718293A4B5C /* BehaviourTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2C3D4E5F60718293A4B5D /* BehaviourTab.swift */; };
+		C2B3D4E5F607182930A4B5C6 /* ReviewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B3D4E5F607182930A4B5C7 /* ReviewTab.swift */; };
 		862C344ECD7A4593B8CBD7D2 /* ShellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD86587CF641CBB9A3198F /* ShellHelper.swift */; };
 		31CC9FB004C940E68F02BDFA /* HookQAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E268F23E8FA042588D67EB0D /* HookQAApp.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +34,8 @@
 		27F1B7626C2E47F986E6D41F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionTab.swift; sourceTree = "<group>"; };
+		B1A2C3D4E5F60718293A4B5D /* BehaviourTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviourTab.swift; sourceTree = "<group>"; };
+		C2B3D4E5F607182930A4B5C7 /* ReviewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTab.swift; sourceTree = "<group>"; };
 		0ADD86587CF641CBB9A3198F /* ShellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellHelper.swift; sourceTree = "<group>"; };
 		8780F67FED234BE9B952C4C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +114,8 @@
 				27F1B7626C2E47F986E6D41F /* MenuBarView.swift */,
 				CD79B1AD4DCE46889AFF30B1 /* StatusBarView.swift */,
 				F3ACD1CB96CA42B8833C3D9A /* ConnectionTab.swift */,
+				B1A2C3D4E5F60718293A4B5D /* BehaviourTab.swift */,
+				C2B3D4E5F607182930A4B5C7 /* ReviewTab.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,6 +206,8 @@
 				5015A6FFBD9A470F9133FA95 /* MenuBarView.swift in Sources */,
 				AD3609EFB7FA4244BE4863DD /* StatusBarView.swift in Sources */,
 				43DB3D8100C44162AD3FCEEE /* ConnectionTab.swift in Sources */,
+				B1A2C3D4E5F60718293A4B5C /* BehaviourTab.swift in Sources */,
+				C2B3D4E5F607182930A4B5C6 /* ReviewTab.swift in Sources */,
 				862C344ECD7A4593B8CBD7D2 /* ShellHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

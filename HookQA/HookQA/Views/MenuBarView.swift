@@ -52,9 +52,9 @@ struct MenuBarView: View {
                             if let status { connectionStatus = status }
                         }
                 case .behaviour:
-                    PlaceholderTabView(title: "Behaviour")
+                    BehaviourTab()
                 case .review:
-                    PlaceholderTabView(title: "Review")
+                    ReviewTab()
                 case .logs:
                     PlaceholderTabView(title: "Logs")
                 }
