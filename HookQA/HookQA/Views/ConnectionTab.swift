@@ -9,6 +9,7 @@ struct ConnectionTab: View {
     @State private var testResult: String? = nil
     @State private var isTesting = false
     @State private var manualModelName = ""
+    @State private var apiKey = ""
 
     var body: some View {
         ScrollView {
@@ -104,6 +105,27 @@ struct ConnectionTab: View {
                     .font(.system(.body, design: .monospaced))
                 }
 
+                // MARK: API Key
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("API Key (optional)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    SecureField("For cloud Ollama endpoints", text: $apiKey)
+                        .textFieldStyle(.roundedBorder)
+                        .font(.system(.body, design: .monospaced))
+                        .onChange(of: apiKey) { _, newValue in
+                            if newValue.isEmpty {
+                                KeychainHelper.delete()
+                                settings.config.connection.apiKey = nil
+                            } else {
+                                KeychainHelper.save(key: newValue)
+                                settings.config.connection.apiKey = newValue
+                            }
+                            settings.scheduleSave()
+                        }
+                }
+
                 // MARK: Test connection button
                 VStack(alignment: .leading, spacing: 4) {
                     Button {
@@ -135,6 +157,9 @@ struct ConnectionTab: View {
             .padding(12)
         }
         .task { await refreshModels() }
+        .onAppear {
+            apiKey = KeychainHelper.read() ?? ""
+        }
     }
 
     // MARK: - Actions

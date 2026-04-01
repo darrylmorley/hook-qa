@@ -4,6 +4,7 @@ enum MenuBarTab: String, CaseIterable {
     case connection = "Connection"
     case behaviour = "Behaviour"
     case review = "Review"
+    case hook = "Hook"
     case logs = "Logs"
 
     var icon: String {
@@ -11,6 +12,7 @@ enum MenuBarTab: String, CaseIterable {
         case .connection: return "wifi"
         case .behaviour:  return "gearshape"
         case .review:     return "checkmark.seal"
+        case .hook:       return "wrench.and.screwdriver"
         case .logs:       return "doc.text"
         }
     }
@@ -55,6 +57,8 @@ struct MenuBarView: View {
                     BehaviourTab()
                 case .review:
                     ReviewTab()
+                case .hook:
+                    HookTab()
                 case .logs:
                     PlaceholderTabView(title: "Logs")
                 }
