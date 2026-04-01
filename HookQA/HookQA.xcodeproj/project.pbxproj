@@ -57,6 +57,7 @@
 		F601234601234601234601AB /* StatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMonitor.swift; sourceTree = "<group>"; };
 		F701234701234701234701AB /* LogsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsTab.swift; sourceTree = "<group>"; };
 		GG11HH22II33JJ44KK55LL67 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		ENT1234567890ABCDEF01234 /* HookQA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HookQA.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +91,7 @@
 				E2D04610FDB04504B4B2D868 /* Utilities */,
 				FF11223344556677889900AA /* Resources */,
 				8780F67FED234BE9B952C4C3 /* Info.plist */,
+				ENT1234567890ABCDEF01234 /* HookQA.entitlements */,
 			);
 			path = HookQA;
 			sourceTree = "<group>";
@@ -395,12 +397,12 @@
 		057858BA466A4EE498AF0D3E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = HookQA/HookQA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = M4RUJ7W6MP;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HookQA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -419,12 +421,13 @@
 		D970CA7D37984611A0A0C297 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = HookQA/HookQA.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = M4RUJ7W6MP;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HookQA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
