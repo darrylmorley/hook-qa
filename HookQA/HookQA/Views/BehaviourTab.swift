@@ -54,7 +54,7 @@ struct BehaviourTab: View {
                 // MARK: Min Diff Lines
                 LabeledSliderRow(
                     label: "Min Diff Lines",
-                    description: "Skip QA for trivial changes below this threshold.",
+                    description: "Skip QA below this many meaningful changed lines (imports, comments, and whitespace don't count).",
                     value: Binding(
                         get: { Double(settings.config.behaviour.minDiffLines) },
                         set: { settings.config.behaviour.minDiffLines = Int($0); settings.scheduleSave() }

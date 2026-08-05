@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// hookqa-hook v1.0.0
+// hookqa-hook v1.1.0
 
 const startTime = Date.now();
 
@@ -293,11 +293,70 @@ async function collectDiff(maxLines: number): Promise<string> {
   return lines.slice(0, maxLines).join("\n") + `\n... (truncated at ${maxLines} lines)`;
 }
 
-function countDiffLines(diff: string): number {
+// --- Diff Filtering ---
+
+export function isCommentLine(s: string): boolean {
+  if (s.startsWith("//") || s.startsWith("/*") || s.startsWith("*/")) return true;
+  if (s.startsWith("<!--") || s.startsWith("-->")) return true;
+  // Block-comment continuation ("* foo"), but not "*ptr" style code
+  if (/^\*(\s|$)/.test(s)) return true;
+  // Shell/Python/Ruby comments ("# foo"), but not "#include", "#define", "#!"
+  if (/^#(\s|$)/.test(s)) return true;
+  return false;
+}
+
+export function isImportLine(s: string): boolean {
+  const patterns: RegExp[] = [
+    /^import[\s({"']/,                       // JS/TS/Swift/Python/Java/Go
+    /^from\s+\S+\s+import\b/,                // Python
+    /^export\s+(\*|\{[^}]*\})\s+from\b/,     // JS re-export
+    /^(const|let|var)\s+.*=\s*require\s*\(/, // CommonJS
+    /^require(_relative)?\s*[("']/,          // Ruby
+    /^#(include|import)\b/,                  // C/ObjC
+    /^using\s+[\w.]+;?\s*$/,                 // C#/C++ using
+    /^use\s+[\w:\\]/,                        // Rust/PHP
+    /^@testable\s+import\b/,                 // Swift
+  ];
+  return patterns.some(p => p.test(s));
+}
+
+export function countMeaningfulDiffLines(diff: string): number {
   if (!diff) return 0;
-  return diff.split("\n").filter(line =>
-    !line.startsWith("=== ") && line.trim() !== ""
-  ).length;
+
+  let count = 0;
+  let removed = new Map<string, number>();
+  let added = new Map<string, number>();
+
+  // Cancel matching removed/added pairs (reindented or moved lines), count the rest
+  function flushHunk(): void {
+    const keys = new Set([...removed.keys(), ...added.keys()]);
+    for (const key of keys) {
+      count += Math.abs((removed.get(key) ?? 0) - (added.get(key) ?? 0));
+    }
+    removed = new Map();
+    added = new Map();
+  }
+
+  for (const line of diff.split("\n")) {
+    if (line.startsWith("@@") || line.startsWith("diff --git") || line.startsWith("=== ")) {
+      flushHunk();
+      continue;
+    }
+    if (line.startsWith("+++ ") || line.startsWith("--- ")) continue;
+
+    const isAdded = line.startsWith("+");
+    const isRemoved = line.startsWith("-");
+    if (!isAdded && !isRemoved) continue;
+
+    const normalized = line.slice(1).trim().replace(/\s+/g, " ");
+    if (!normalized || isCommentLine(normalized) || isImportLine(normalized)) continue;
+
+    const bucket = isAdded ? added : removed;
+    bucket.set(normalized, (bucket.get(normalized) ?? 0) + 1);
+  }
+
+  flushHunk();
+  return count;
 }
 
 // --- Project Name ---
@@ -512,7 +571,7 @@ async function main(): Promise<void> {
 
   // Collect diff
   const diff = await collectDiff(config.maxDiffLines);
-  const diffLineCount = countDiffLines(diff);
+  const diffLineCount = countMeaningfulDiffLines(diff);
 
   if (diffLineCount < config.minDiffLines) {
     // Not enough diff to review — skip
@@ -525,7 +584,7 @@ async function main(): Promise<void> {
       findings: 0,
       criticals: 0,
       warnings: 0,
-      summary: `Diff too small (${diffLineCount} lines, min ${config.minDiffLines})`,
+      summary: `Diff too small (${diffLineCount} meaningful lines, min ${config.minDiffLines})`,
       durationMs: 0,
     });
     await deleteRetryFile(sessionId);
@@ -587,7 +646,7 @@ async function main(): Promise<void> {
   process.exit(2);
 }
 
-main().catch(() => {
+if (import.meta.main) {
   // Never crash Claude Code
-  process.exit(0);
-});
+  main().catch(() => process.exit(0));
+}
