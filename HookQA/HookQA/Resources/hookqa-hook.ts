@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-// hookqa-hook v1.1.0
+// hookqa-hook v1.2.0
 
 const startTime = Date.now();
 
@@ -411,6 +411,45 @@ async function deleteRetryFile(sessionId: string): Promise<void> {
   }
 }
 
+// --- Pass Cache ---
+
+export function computeReviewFingerprint(diff: string, config: ResolvedConfig): string {
+  const payload = JSON.stringify({
+    diff,
+    model: config.model,
+    temperature: config.temperature,
+    weights: config.weights,
+    customInstructions: config.customInstructions,
+    blockOnWarnings: config.blockOnWarnings,
+  });
+  return new Bun.CryptoHasher("sha256").update(payload).digest("hex");
+}
+
+export function getPassCacheFilePath(cwd: string): string {
+  const key = new Bun.CryptoHasher("sha256").update(cwd).digest("hex").slice(0, 16);
+  return `/tmp/hookqa-${key}-lastpass`;
+}
+
+async function readPassCache(cwd: string): Promise<string | null> {
+  try {
+    const file = Bun.file(getPassCacheFilePath(cwd));
+    const exists = await file.exists();
+    if (!exists) return null;
+    const text = await file.text();
+    return text.trim();
+  } catch {
+    return null;
+  }
+}
+
+async function writePassCache(cwd: string, fingerprint: string): Promise<void> {
+  try {
+    await Bun.write(getPassCacheFilePath(cwd), fingerprint);
+  } catch {
+    // never fail on cache errors
+  }
+}
+
 // --- Logging ---
 
 async function appendLog(config: ResolvedConfig, entry: LogEntry): Promise<void> {
@@ -591,6 +630,27 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  // Check pass cache — skip if this exact diff already passed review
+  const fingerprint = computeReviewFingerprint(diff, config);
+  const cachedFingerprint = await readPassCache(process.cwd());
+
+  if (cachedFingerprint === fingerprint) {
+    const project = await getProjectName();
+    await appendLog(config, {
+      timestamp: new Date().toISOString(),
+      project,
+      model: config.model,
+      verdict: "SKIPPED",
+      findings: 0,
+      criticals: 0,
+      warnings: 0,
+      summary: "Unchanged diff already reviewed — skipping",
+      durationMs: 0,
+    });
+    await deleteRetryFile(sessionId);
+    process.exit(0);
+  }
+
   // Call Ollama
   const prompt = buildPrompt(diff, config);
   const { response, durationMs } = await callOllama(config, prompt);
@@ -630,6 +690,7 @@ async function main(): Promise<void> {
   });
 
   if (!shouldBlock) {
+    await writePassCache(process.cwd(), fingerprint);
     await deleteRetryFile(sessionId);
     process.exit(0);
   }
